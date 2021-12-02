@@ -1,0 +1,20 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group = 'xyz.deftu.eventbus'
+version = '1.0'
+archivesBaseName = 'SimpleEventBus'
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'xyz.deftu.eventbus'
+            version = '1.0'
+            artifactId = 'SimpleEventBus'
+
+            from components.java
+        }
+    }
+}
