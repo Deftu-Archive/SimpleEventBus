@@ -1,20 +1,92 @@
 plugins {
     id 'java'
+    id 'signing'
     id 'maven-publish'
 }
 
-group = 'xyz.deftu.eventbus'
-version = '1.0'
-archivesBaseName = 'SimpleEventBus'
+group = projectGroup
+version = projectVersion
+archivesBaseName = projectName
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.8.1')
+    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.8.1')
+}
 
 publishing {
     publications {
-        maven(MavenPublication) {
-            groupId = 'xyz.deftu.eventbus'
-            version = '1.0'
-            artifactId = 'SimpleEventBus'
+        local(MavenPublication) {
+            groupId = projectGroup
+            artifactId = projectName
+            version = projectVersion
 
             from components.java
         }
+
+        publish(MavenPublication) {
+            from components.java
+
+            groupId = projectGroup
+            artifactId = projectName
+            version = projectVersion
+
+            pom {
+                name = projectName
+                description = projectDescription
+                url = projectGit
+
+                licenses {
+                    license {
+                        name = 'GNU LESSER GENERAL PUBLIC LICENSE, Version 3'
+                        url = 'https://www.gnu.org/licenses/lgpl-3.0.en.html'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = "deftu"
+                        name = "Deftu"
+                        email = "deftudev@gmail.com"
+                    }
+                }
+
+                scm {
+                    url = projectGit
+                }
+            }
+        }
     }
+
+    repositories {
+        maven {
+            name = "MavenCentral"
+            url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = findProperty("publishing.mavencentral.username")
+                password = findProperty("publishing.mavencentral.password")
+            }
+        }
+    }
+}
+
+jar {
+    from 'LICENSE'
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign publishing.publications.publish
+    sign configurations.archives
 }
