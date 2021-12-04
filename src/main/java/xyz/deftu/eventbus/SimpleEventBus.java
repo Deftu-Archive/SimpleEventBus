@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 public class SimpleEventBus {
 
     private static final SimpleEventBus GLOBAL_BUS = new SimpleEventBus();
-    private final Map<Class<? extends Event>, ArrayList<EventData>> registry = new HashMap<>();
+    private final Map<Class<? extends Event>, List<EventData>> registry = new HashMap<>();
 
     private boolean isBadMethod(Method method) {
         return method.getParameterTypes().length != 1 || !method.isAnnotationPresent(SubscribeEvent.class);
@@ -120,7 +120,7 @@ public class SimpleEventBus {
     }
 
     public void unregister(Object instance) {
-        for (ArrayList<EventData> value : registry.values()) {
+        for (List<EventData> value : registry.values()) {
             value.removeIf(data -> data.source.equals(instance));
         }
 
@@ -140,7 +140,7 @@ public class SimpleEventBus {
         }
     }
 
-    public Map<Class<? extends Event>, ArrayList<EventData>> getRegistry() {
+    public Map<Class<? extends Event>, List<EventData>> getRegistry() {
         return registry;
     }
 

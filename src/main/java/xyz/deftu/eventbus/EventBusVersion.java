@@ -2,7 +2,7 @@ package xyz.deftu.eventbus;
 
 public class EventBusVersion {
 
-    public static final EventBusVersion CURRENT = new EventBusVersion(4, 0, 0);
+    public static final EventBusVersion CURRENT = new EventBusVersion(1, 0, 1);
 
     public final int major;
     public final int minor;
